@@ -1,16 +1,24 @@
-export const getAirlineById = (id) => {
+const getAirlineById = (id) => {
   for (let i = 0; i < airlines.length; i++) {
     let airline = airlines[i];
     if (airline.id === id) return airline.name;
   }
 }
 
-export const getAirportByCode = (code) => {
+const getAirportByCode = (code) => {
   for (let i = 0; i < airports.length; i++) {
     let airport = airports[i];
     if (airport.code === code) return airport.name;
   }
 }
+
+export const formatValues = (prop, value) => {
+  if (prop === 'airline') {
+    return getAirlineById(value);
+  } else {
+    return getAirportByCode(value);
+  }
+};
 
 const routes = [
     {"airline":24,"src":"DFW","dest":"XNA"},
