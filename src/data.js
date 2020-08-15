@@ -3,14 +3,14 @@ const getAirlineById = (id) => {
     let airline = airlines[i];
     if (airline.id === id) return airline.name;
   }
-}
+};
 
 const getAirportByCode = (code) => {
   for (let i = 0; i < airports.length; i++) {
     let airport = airports[i];
     if (airport.code === code) return airport.name;
   }
-}
+};
 
 export const formatValues = (prop, value) => {
   if (prop === 'airline') {

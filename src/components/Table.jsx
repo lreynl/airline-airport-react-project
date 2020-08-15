@@ -1,14 +1,52 @@
 import React, { Component } from 'react';
-import Title from './Title.jsx';
-class Table extends Component {
-  render() {
-    //map each column element onto a title plus an
-    //array of table elements, each passed to the
-    //correct function according to the prop.
-    //console.log(this.props.format);
 
+class Table extends Component {
+  state = {
+    page: 200,
+  };
+
+  prevButton = (e) => {
+    e.preventDefault();
+    const rowsMin = 0;
+    const perPage = +this.props.perPage;
+    const currentPageStart = this.state.page;
+    let updatedPageStart;
+    if (currentPageStart - perPage < rowsMin) {
+      return;
+    } else {
+      updatedPageStart = currentPageStart - perPage;
+    }
+    this.setState({'page': updatedPageStart});
+  };
+
+  nextButton = (e) => {
+    e.preventDefault();
+    const rowsMax = this.props.rows.length;
+    const perPage = +this.props.perPage;
+    const currentPageStart = this.state.page;
+    let updatedPageStart;
+    if (rowsMax - currentPageStart <= perPage) {
+      return;
+    } else {
+      updatedPageStart = currentPageStart + perPage;
+    }
+    this.setState({'page': updatedPageStart});
+  };
+
+  prevDisabled = () => {
+    return (this.state.page === 0 ? true : false);
+  }
+
+  nextDisabled = () => {
+    return (this.state.page + (+this.props.perPage) === this.props.rows.length ? true : false);
+  }
+
+  render() {
+    const start = this.state.page;
+    const perPage = +this.props.perPage;
+    const currentlyViewedRows = this.props.rows.slice(start, start + perPage);
     const rows = (
-      this.props.rows.map((row, index) => {
+      currentlyViewedRows.map((row, index) => {
         return (
           <tr>
             {this.props.columns.map(columnElem => {
@@ -20,7 +58,6 @@ class Table extends Component {
           </tr>
         );
       })
-
     );
 
     const title = (
@@ -33,9 +70,16 @@ class Table extends Component {
       </tr>
     );
     return (
-        <table>
-          {[title, ...rows]}
+      <div>
+        <table className={this.props.className}>
+          <tbody>
+            {[title, ...rows]}
+          </tbody>
         </table>
+        <p>Showing {start + 1}-{start + perPage} of {this.props.rows.length} routes.</p>
+        <button onClick={this.prevButton} disabled={this.prevDisabled()}>previous</button>
+        <button onClick={this.nextButton} disabled={this.nextDisabled()}>next</button>
+      </div>
     );
 
   }
