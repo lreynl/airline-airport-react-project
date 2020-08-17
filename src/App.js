@@ -38,6 +38,14 @@ class App extends Component {
     this.setState({ page: page });
   }
 
+  clear = () => {
+    this.setState({
+      selectedAirline: '',
+      selectedAirport: '',
+      page: 0,
+    });
+  }
+
   render() {
     const columns = [{ name: 'Airline', property: 'airline'},
                      { name: 'Source Airport', property: 'src'},
@@ -69,6 +77,7 @@ class App extends Component {
             onChange={this.handleAirportChange}
             onSelect=''
           />
+          <button onClick={this.clear}>Clear Filters</button>
           <Table
             className="routes-table"
             columns={columns}
