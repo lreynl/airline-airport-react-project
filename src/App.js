@@ -60,22 +60,26 @@ class App extends Component {
           Show routes on
           <Select
             options={getAirlineList()}
-            value=''
+            value={this.state.selectedAirline}
             allTitle="All Airlines"
             valueKey="id"
             titleKey="name"
             onChange={this.handleAirlineChange}
             onSelect=''
+            selected={{ airline: this.state.selectedAirline,
+                       airport: this.state.selectedAirport }}
           />
           flying in or out of
           <Select
             options={getAirportList()}
-            value=''
+            value={this.state.selectedAirport}
             allTitle="All Airports"
             valueKey="id"
             titleKey="name"
             onChange={this.handleAirportChange}
             onSelect=''
+            selected={{ airline: this.state.selectedAirline,
+                       airport: this.state.selectedAirport }}
           />
           <button onClick={this.clear}>Clear Filters</button>
           <Table

@@ -31,21 +31,17 @@ export const getRoutesByAirlineAirport = (airline, airport) => {
     return routes;
   } else if (airline === '') {
     const code = getAirportCodeByName(airport);
-    console.log(code);
     return routes.filter(route => {
       return (route.src === code || route.dest === code);
     });
   } else if (airport === '') {
     const id = getAirlineIdByName(airline);
-    console.log(id);
     return routes.filter(route => {
       return (route.airline === id);
     });
   } else {
     const id = getAirlineIdByName(airline);
     const code = getAirportCodeByName(airport);
-    console.log(id + ' ' + code);
-
     return routes.filter(route => {
       return (route.airline === id && (route.src === code || route.dest === code));
     });
