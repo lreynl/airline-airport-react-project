@@ -30,11 +30,24 @@ class Table extends Component {
   };
 
   prevDisabled = () => {
-    return (this.props.page === 0 ? true : false);
+    return (this.props.page === 0);
   }
 
   nextDisabled = () => {
-    return (this.props.page + (+this.props.perPage) === this.props.rows.length ? true : false);
+    const perPage = +this.props.perPage;
+    const length = this.props.rows.length;
+    return (this.props.page + perPage === length) ||
+           (length < perPage);
+  }
+
+  underPageLength = (rows) => {
+    const perPage = +this.props.perPage;
+    const rowsLength = this.props.rows.length;
+    if (rowsLength < perPage) {
+      return rowsLength;
+    } else {
+      return rows;
+    }
   }
 
   render() {
@@ -65,6 +78,7 @@ class Table extends Component {
         })}
       </tr>
     );
+
     return (
       <div>
         <table className={this.props.className}>
@@ -72,7 +86,7 @@ class Table extends Component {
             {[title, ...rows]}
           </tbody>
         </table>
-        <p>Showing {start + 1}-{start + perPage} of {this.props.rows.length} routes.</p>
+        <p>Showing {start + 1}-{this.underPageLength(start + perPage)} of {this.props.rows.length} routes.</p>
         <button onClick={this.prevButton} disabled={this.prevDisabled()}>previous</button>
         <button onClick={this.nextButton} disabled={this.nextDisabled()}>next</button>
       </div>

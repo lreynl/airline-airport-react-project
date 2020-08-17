@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import data from './data.js';
 //import { getAirportByCode } from './data.js';
-import { getRoutesByAirlineName } from './data.js';
-import { formatValues, getAirlineList } from './data.js';
+import { getRoutesByAirlineAirport } from './data.js';
+import { formatValues, getAirlineList, getAirportList } from './data.js';
 import Table from './components/Table.jsx';
 import Select from './components/Select.jsx';
 import './App.css';
@@ -10,11 +10,11 @@ import './App.css';
 class App extends Component {
   state = {
     selectedAirline: '',
+    selectedAirport: '',
     page: 0,
   }
 
-  handleChange = (e) => {
-    console.log(e.target.value);
+  handleAirlineChange = (e) => {
     let value;
     if (e.target.value === 'All Airlines') {
       value = '';
@@ -22,6 +22,16 @@ class App extends Component {
       value = e.target.value;
     }
     this.setState({ selectedAirline: value, page: 0 });
+  }
+
+  handleAirportChange = (e) => {
+    let value;
+    if (e.target.value === 'All Airports') {
+      value = '';
+    } else {
+      value = e.target.value;
+    }
+    this.setState({ selectedAirport: value, page: 0 });
   }
 
   updatePage = (page) => {
@@ -46,13 +56,26 @@ class App extends Component {
             allTitle="All Airlines"
             valueKey="id"
             titleKey="name"
-            onChange={this.handleChange}
+            onChange={this.handleAirlineChange}
+            onSelect=''
+          />
+          flying in or out of
+          <Select
+            options={getAirportList()}
+            value=''
+            allTitle="All Airports"
+            valueKey="id"
+            titleKey="name"
+            onChange={this.handleAirportChange}
             onSelect=''
           />
           <Table
             className="routes-table"
             columns={columns}
-            rows={getRoutesByAirlineName(this.state.selectedAirline)}
+            rows={getRoutesByAirlineAirport(
+              this.state.selectedAirline,
+              this.state.selectedAirport,
+            )}
             format={formatValues}
             perPage='25'
             page={this.state.page}

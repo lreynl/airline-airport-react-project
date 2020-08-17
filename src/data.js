@@ -19,12 +19,36 @@ const getAirportByCode = (code) => {
   return -1;
 }
 
-export const getRoutesByAirlineName = (name) => {
-  if (name === '') {
+const getAirportCodeByName = (name) => {
+  for (let i = 0; i < airports.length; i++) {
+    if (airports[i].name === name) return airports[i].code;
+  }
+  return -1;
+}
+
+export const getRoutesByAirlineAirport = (airline, airport) => {
+  if (airline === '' && airport === '') {
     return routes;
+  } else if (airline === '') {
+    const code = getAirportCodeByName(airport);
+    console.log(code);
+    return routes.filter(route => {
+      return (route.src === code || route.dest === code);
+    });
+  } else if (airport === '') {
+    const id = getAirlineIdByName(airline);
+    console.log(id);
+    return routes.filter(route => {
+      return (route.airline === id);
+    });
   } else {
-    const code = getAirlineIdByName(name);
-    return routes.filter(route => route.airline === code);
+    const id = getAirlineIdByName(airline);
+    const code = getAirportCodeByName(airport);
+    console.log(id + ' ' + code);
+
+    return routes.filter(route => {
+      return (route.airline === id && (route.src === code || route.dest === code));
+    });
   }
 };
 
@@ -36,8 +60,12 @@ export const formatValues = (prop, value) => {
   }
 };
 
-export const getAirlineList = (name) => {
+export const getAirlineList = () => {
   return airlines.map(airline => airline.name);
+}
+
+export const getAirportList = () => {
+  return airports.map(airport => airport.name);
 }
 
 const routes = [
