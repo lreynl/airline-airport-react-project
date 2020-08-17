@@ -1,14 +1,30 @@
+const getAirlineIdByName = (name) => {
+  for (let i = 0; i < airlines.length; i++) {
+    if (airlines[i].name === name) return airlines[i].id;
+  }
+  return -1;
+}
+
 const getAirlineById = (id) => {
   for (let i = 0; i < airlines.length; i++) {
-    let airline = airlines[i];
-    if (airline.id === id) return airline.name;
+    if (airlines[i].id === id) return airlines[i].name;
   }
-};
+  return -1;
+}
 
 const getAirportByCode = (code) => {
   for (let i = 0; i < airports.length; i++) {
-    let airport = airports[i];
-    if (airport.code === code) return airport.name;
+    if (airports[i].code === code) return airports[i].name;
+  }
+  return -1;
+}
+
+export const getRoutesByAirlineName = (name) => {
+  if (name === '') {
+    return routes;
+  } else {
+    const code = getAirlineIdByName(name);
+    return routes.filter(route => route.airline === code);
   }
 };
 
@@ -19,6 +35,10 @@ export const formatValues = (prop, value) => {
     return getAirportByCode(value);
   }
 };
+
+export const getAirlineList = (name) => {
+  return airlines.map(airline => airline.name);
+}
 
 const routes = [
     {"airline":24,"src":"DFW","dest":"XNA"},

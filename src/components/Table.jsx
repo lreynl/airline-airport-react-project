@@ -1,48 +1,44 @@
 import React, { Component } from 'react';
 
 class Table extends Component {
-  state = {
-    page: 200,
-  };
-
   prevButton = (e) => {
     e.preventDefault();
     const rowsMin = 0;
     const perPage = +this.props.perPage;
-    const currentPageStart = this.state.page;
+    const currentPageStart = this.props.page;
     let updatedPageStart;
     if (currentPageStart - perPage < rowsMin) {
       return;
     } else {
       updatedPageStart = currentPageStart - perPage;
     }
-    this.setState({'page': updatedPageStart});
+    this.props.updatePage(updatedPageStart);
   };
 
   nextButton = (e) => {
     e.preventDefault();
     const rowsMax = this.props.rows.length;
     const perPage = +this.props.perPage;
-    const currentPageStart = this.state.page;
+    const currentPageStart = this.props.page;
     let updatedPageStart;
     if (rowsMax - currentPageStart <= perPage) {
       return;
     } else {
       updatedPageStart = currentPageStart + perPage;
     }
-    this.setState({'page': updatedPageStart});
+    this.props.updatePage(updatedPageStart);
   };
 
   prevDisabled = () => {
-    return (this.state.page === 0 ? true : false);
+    return (this.props.page === 0 ? true : false);
   }
 
   nextDisabled = () => {
-    return (this.state.page + (+this.props.perPage) === this.props.rows.length ? true : false);
+    return (this.props.page + (+this.props.perPage) === this.props.rows.length ? true : false);
   }
 
   render() {
-    const start = this.state.page;
+    const start = this.props.page;
     const perPage = +this.props.perPage;
     const currentlyViewedRows = this.props.rows.slice(start, start + perPage);
     const rows = (
