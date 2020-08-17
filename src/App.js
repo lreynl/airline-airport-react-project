@@ -39,10 +39,15 @@ class App extends Component {
           <h1 className="title">Airline Routes</h1>
         </header>
         <section>
+          Show routes on
           <Select
             options={getAirlineList()}
+            value=''
             allTitle="All Airlines"
+            valueKey="id"
+            titleKey="name"
             onChange={this.handleChange}
+            onSelect=''
           />
           <Table
             className="routes-table"
